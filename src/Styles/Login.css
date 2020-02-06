@@ -1,0 +1,15 @@
+.login {
+  width: 100%;
+}
+.login-box {
+  width: 400px;
+  margin: auto;
+  margin-top: 200px;
+}
+.login-box input {
+  width: 100%;
+  margin-bottom: 20px;
+}
+.login-box button {
+  margin: auto;
+}

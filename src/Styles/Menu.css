@@ -1,0 +1,8 @@
+.menu {
+  display: inline-block;
+  vertical-align: top;
+  width: 250px;
+}
+.menu .p-menu {
+  width: 100%;
+}

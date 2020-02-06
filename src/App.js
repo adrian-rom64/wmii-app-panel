@@ -1,26 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react'
+import './Styles/App.css'
+import {Switch, Route} from 'react-router'
+import routesData from './Data/Routes'
 
-function App() {
+import Navbar from './Components/Navbar'
+import Menu from './Components/Menu'
+import Login from './Views/Login'
+
+const App = () => {
+
+  const [loggedIn, setLoggedIn] = useState(false)
+
+
+  const routes = routesData.map(route => (
+    <Route key={route.path} path={route.path} exact={route.exact} component={route.component}/>
+  ))
+
+  const loggedInLayout = (
+    <React.Fragment>
+      <Menu />
+      <div className='view-container'>
+        <Switch>{routes}</Switch>
+      </div>
+    </React.Fragment>
+  )
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <Navbar loggedIn={loggedIn} />
+      {loggedIn ? loggedInLayout : <Login />}
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

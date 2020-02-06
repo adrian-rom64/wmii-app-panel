@@ -1,0 +1,27 @@
+.navbar {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 50px;
+	background: #333;
+}
+.navbar-left {
+	float: left;
+}
+.navbar-logo {
+	line-height: 50px;
+	padding-left: 20px;
+	color: lightblue;
+	font-size: 20px;
+	letter-spacing: 1px;
+	cursor: pointer;
+}
+.navbar-right {
+	float: right;
+}
+.navbar-buttons {
+	height: 100%;
+	padding-top: 8px;
+	padding-right: 15px;
+}
