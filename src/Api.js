@@ -3,13 +3,19 @@ import Axios from 'axios'
 class Api {
   constructor () {
 
-    this.apiUrl = 'https://parkcash.itelab.pl/v1'
+    // const apiUrl = 'https://wmii-app-backend.herokuapp.com/'
+    const apiUrl = 'http://localhost:3000'
     this.token = null
 
     this.axios = Axios.create({
-      baseURL: this.apiUurl,
+      baseURL: apiUrl,
       timeout: 10000,
-      headers: {Authorization: `Bearer ${this.token}`, 'Content-type': 'application/json'}
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-type': 'application/json',
+        'Accept': '*/*',
+        'Cache-Control': 'no-cache'
+      }
     })
 
     this.request = async (method, url, payload) => {
@@ -35,22 +41,24 @@ class Api {
     })
 
     this.login = async (email, password) => {
-      const baseURL = this.apiUrl
       const data = {
         email: email,
         password: password
       }
-      const settings = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
+      const res = await this.post('/login', data)
+      console.log(res.code)
+      if (res.code !== 200) return false
+      else {
+        localStorage.setItem('token', res.data.token)
+        this.token = res.data.token
+        return true
       }
-      const res = await fetch(baseURL + '/sessions', settings)
-      console.log(res)
-    } 
-  
+    }
+
+    this.logout = () => {
+      localStorage.removeItem('token')
+      localStorage.removeItem('userToken')
+    }
   }
 }
 

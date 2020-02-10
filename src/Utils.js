@@ -1,7 +1,6 @@
-import TextContent from './Data/TextContent.json'
+import moment from 'moment'
 
-export const translate = slug => {
-  if (TextContent[slug]) return TextContent[slug]
-  console.warn(`No translation for ${slug}`)
-  return slug
+export const unixToString = unix => {
+  const date = moment.unix(unix)
+  return date.format('l') + ' ' + date.format('LT')
 }

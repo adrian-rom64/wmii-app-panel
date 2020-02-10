@@ -14,16 +14,35 @@ const Login = props => {
 
   useEffect(() => {
     props.history.push('/login')
-    Api.login('user1@parkcash.io', 'f1242Ydo')
   }, []) // eslint-disable-line
+
+  const loginHandler = async () => {
+    const result = await Api.login(username, password)
+    props.setLoggedIn(result)
+  }
+
+  const keyHandler = event => {
+    if (event.key === 'Enter') loginHandler()
+  }
 
   return ( 
     <div className='login'>
       <div className='login-box'>
-        <Card>
-          <InputText placeholder={global.tr('username')} value={username} onChange={(e) => setUsername(e.target.value)}/>
-          <InputText placeholder={global.tr('password')} type='password' value={password} onChange={(e) => setPassword(e.target.value)}/>
-          <Button label={global.tr('login-button')} />
+        <Card onKeyPress={keyHandler}>
+          <InputText 
+            placeholder='Username'
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            onKeyPress={keyHandler}
+          />
+          <InputText 
+            placeholder='Password'
+            type='password'
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            onKeyPress={keyHandler}
+          />
+          <Button label='Log in' onClick={loginHandler}/>
         </Card>
       </div>
     </div>

@@ -11,8 +11,8 @@ const SideMenu = props => {
     {
       label: 'Assets',
       items: [
-        {label: 'Users', command: () => goto('/users')},
-        {label: 'Cars', command: () => goto('/cars')}
+        {label: 'Index', command: () => goto('/ads')},
+        {label: 'New', command: () => goto('/ads/new')}
       ]
     },
     {

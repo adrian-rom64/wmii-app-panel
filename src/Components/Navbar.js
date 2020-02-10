@@ -6,9 +6,21 @@ import {withRouter} from 'react-router'
 
 const Navbar = props => {
 
-	const logoButton = <span onClick={() => props.history.push('/')}>{global.tr('app-name')}</span>
-	const logoutButton = <Button onClick={() => props.history.push('/logout')} label={global.tr('logout')} className='p-button-secondary'/>
-	const loginButton = <Button onClick={() => props.history.push('/login')} label={global.tr('login')} />
+	const logoutHandler = () => {
+		props.logout()
+		props.history.push('/login')
+	}
+
+	const disabledLoginButton = <Button disabled label='Login' className='p-button-secondary'/>
+	const logoButton = <span onClick={() => props.history.push('/')}>Wmii app panel</span>
+	const logoutButton = <Button onClick={logoutHandler} label='Log out' className='p-button-secondary'/>
+	const loginButton = <Button onClick={() => props.history.push('/login')} label='Log in' />
+
+	let authButton = loginButton
+	if (!props.loggedIn && props.history.location.pathname === '/login')
+		authButton = disabledLoginButton
+	else if (props.loggedIn)
+		authButton = logoutButton
 
 	return (
 		<React.Fragment>
@@ -18,7 +30,7 @@ const Navbar = props => {
 				</div>
 				<div className='navbar-right'>
 					<div className='navbar-buttons'>
-						{props.loggedIn ? logoutButton : loginButton}
+						{authButton}
 					</div>
 				</div>
 			</div>
@@ -29,7 +41,8 @@ const Navbar = props => {
 }
 
 Navbar.propTypes = {
-	loggedIn: PropTypes.bool
+	loggedIn: PropTypes.bool,
+	logout: PropTypes.func
 }
 
 export default withRouter(Navbar)

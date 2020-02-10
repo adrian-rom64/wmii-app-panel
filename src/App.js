@@ -7,9 +7,20 @@ import Navbar from './Components/Navbar'
 import Menu from './Components/Menu'
 import Login from './Views/Login'
 
+const Api = require('./Api').default.getInstance()
+
 const App = () => {
 
-  const [loggedIn, setLoggedIn] = useState(false)
+  const checkifLoggedIn = () => {
+    return !!localStorage.getItem('token')
+  }
+
+  const [loggedIn, setLoggedIn] = useState(checkifLoggedIn)
+
+  const logout = () => {
+    setLoggedIn(false)
+    Api.logout()
+  }
 
 
   const routes = routesData.map(route => (
@@ -27,8 +38,8 @@ const App = () => {
   
   return (
     <div className="app">
-      <Navbar loggedIn={loggedIn} />
-      {loggedIn ? loggedInLayout : <Login />}
+      <Navbar loggedIn={loggedIn} logout={logout}/>
+      {loggedIn ? loggedInLayout : <Login setLoggedIn={setLoggedIn}/>}
     </div>
   )
 }
