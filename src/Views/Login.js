@@ -4,8 +4,7 @@ import {InputText} from 'primereact/inputtext'
 import {Card} from 'primereact/card'
 import {Button} from 'primereact/button'
 import {withRouter} from 'react-router'
-
-const Api = require('../Api').default.getInstance()
+import Api from '../Api'
 
 const Login = props => {
 

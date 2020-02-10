@@ -1,13 +1,12 @@
 import Axios from 'axios'
 
-class Api {
-  constructor () {
+const apiUrl = 'https://wmii-app-backend.herokuapp.com/'
+// const apiUrl = 'http://localhost:3000'
 
-    // const apiUrl = 'https://wmii-app-backend.herokuapp.com/'
-    const apiUrl = 'http://localhost:3000'
-    this.token = null
+export default class Api {
 
-    this.axios = Axios.create({
+  static axios = () => {
+    return Axios.create({
       baseURL: apiUrl,
       timeout: 10000,
       headers: {
@@ -17,65 +16,46 @@ class Api {
         'Cache-Control': 'no-cache'
       }
     })
+  }
 
-    this.request = async (method, url, payload) => {
-      let response = null
-			const setResponse = _response => {response = _response}
-			try {
-				await this.axios[method](url, payload).then(res => {
-					setResponse(res)
-				}).catch(err => {
-					setResponse({status: err.response.status, data: null})
-				})
-				return {code: response.status, data: response.data}
-			}
-			catch {
-				console.error('Error while connecting to server')
-				return {code: 0, data: null}
-			}
+  static request = async (method, url, payload) => {
+    let response = null
+    const setResponse = _response => {response = _response}
+    try {
+      await Api.axios()[method](url, payload).then(res => {
+        setResponse(res)
+      }).catch(err => {
+        setResponse({status: err.response.status, data: null})
+      })
+      return {code: response.status, data: response.data}
     }
-
-    const availableMethods = ['get', 'post', 'delete', 'patch']
-    availableMethods.forEach(method => {
-      this[method] = async (url, payload) => this.request(method, url, payload)
-    })
-
-    this.login = async (email, password) => {
-      const data = {
-        email: email,
-        password: password
-      }
-      const res = await this.post('/login', data)
-      console.log(res.code)
-      if (res.code !== 200) return false
-      else {
-        localStorage.setItem('token', res.data.token)
-        this.token = res.data.token
-        return true
-      }
-    }
-
-    this.logout = () => {
-      localStorage.removeItem('token')
-      localStorage.removeItem('userToken')
+    catch {
+      console.error('Error while connecting to server')
+      return {code: 0, data: null}
     }
   }
+
+  static get = async (url, payload) => this.request('get', url, payload)
+  static post = async (url, payload) => this.request('post', url, payload)
+  static delete = async (url, payload) => this.request('delete', url, payload)
+  static patch = async (url, payload) => this.request('patch', url, payload)
+
+  static login = async (email, password) => {
+    const data = {
+      email: email,
+      password: password
+    }
+    const res = await Api.post('/login', data)
+    console.log(res.code)
+    if (res.code !== 200) return false
+    else {
+      localStorage.setItem('token', res.data.token)
+      return true
+    }
+  }
+
+  static logout = () => {
+    localStorage.removeItem('token')
+  }
+
 }
-
-export default (() =>  {
-  let instance = null
-  const createInstance = () => {
-    return new Api()
-  }
-
-  return {
-    getInstance: () => {
-      if (!instance) {
-        instance = createInstance()
-      }
-      return instance
-    }
-  }
-})()
-
-

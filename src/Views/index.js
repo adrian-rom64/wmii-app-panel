@@ -5,8 +5,7 @@ import { unixToString } from '../Utils'
 import '../Styles/IndexView.css'
 import Swal from 'sweetalert2'
 import {withRouter} from 'react-router'
-
-const Api = require('../Api').default.getInstance()
+import Api from '../Api'
 
 const Index = props => {
 
@@ -35,7 +34,7 @@ const Index = props => {
   }
 
   const editHandler = id => {
-    console.log('edit', id)
+    props.history.push(`/ads/${id}/edit`)
   }
 
   const deleteHandler = id => {
@@ -78,18 +77,18 @@ const Index = props => {
     )
   }
 
-  const data = ads.map(item => {
-    item.title = link(item.title, () => showHandler(item.id))
-    item.edit = link('edit', () => editHandler(item.id))
-    item.delete = link('delete', () => deleteHandler(item.id))
-    item.updated_at = unixToString(item.updated_at)
-    return item
-  })
+  const data = ads.map(item => ({
+    ...item,
+    title: link(item.title, () => showHandler(item.id)),
+    edit: link('edit', () => editHandler(item.id)),
+    delete: link('delete', () => deleteHandler(item.id)),
+    updated_at: unixToString(item.updated_at)
+  }))
 
   return (
     <div className='index'>
       <h2>Index</h2>
-      <DataTable value={data} style={{ textAlign: 'center' }}>
+      <DataTable value={data} style={{ textAlign: 'center' }} responsive>
         <Column style={{ width: '60px' }} field='id' header='Id' />
         <Column field='title' header='Title' />
         <Column field='updated_at' header='Updated' />

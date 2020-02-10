@@ -6,8 +6,7 @@ import routesData from './Data/Routes'
 import Navbar from './Components/Navbar'
 import Menu from './Components/Menu'
 import Login from './Views/Login'
-
-const Api = require('./Api').default.getInstance()
+import Api from './Api'
 
 const App = () => {
 
@@ -29,7 +28,7 @@ const App = () => {
 
   const loggedInLayout = (
     <React.Fragment>
-      <Menu />
+      <Menu logout={logout} />
       <div className='view-container'>
         <Switch>{routes}</Switch>
       </div>

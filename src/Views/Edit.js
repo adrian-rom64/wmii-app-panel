@@ -1,22 +1,23 @@
-import React, {useState, useRef} from 'react'
+import React, {useState, useRef, useEffect} from 'react'
 import {InputText} from 'primereact/inputtext'
 import {InputTextarea} from 'primereact/inputtextarea'
 import {SelectButton} from 'primereact/selectbutton'
 import {Button} from 'primereact/button'
-import '../Styles/New.css'
+import '../Styles/Edit.css'
 import Api from '../Api'
 import Swal from 'sweetalert2'
 import {withRouter} from 'react-router'
 
-const New = props => {
+const Edit = props => {
 
+  const [ad, setAd] = useState({})
   const backgroundRef = useRef()
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [year, setYear] = useState({name: 'Wszystkie', code: 0})
   const [specialization, setSpecialization] = useState({name: 'Wszystkie', code: 'none'})
 
-  const postAd = async () => {
+  const updateAd = async () => {
     const data = new FormData()
     data.set('title', title)
     data.set('content', content)
@@ -24,28 +25,55 @@ const New = props => {
     data.set('specialization', specialization.code)
     if (backgroundRef.current.files[0])
       data.set('background', backgroundRef.current.files[0])
-    const res = await Api.post('/ads', data)
+    const res = await Api.patch(`/ads/${ad.id}`, data)
     if (res.code === 200) {
-      Swal.fire({
-        title: 'Ogłoszenie dodane',
-        icon: 'success'
-      })
       props.history.push('/ads')
     } else {
       Swal.fire({
         title: 'Coś poszło nie tak',
         icon: 'error'
       })
-    } 
+    }
   }
+
+  const getAd = async () => {
+    const id = props.history.location.pathname.replace('/ads/', '').replace('/edit', '')
+    const res = await Api.get(`/ads/${id}`)
+    console.log(res)
+    if (res.code === 200) {
+      setAd(res.data.ad)
+    } else {
+      Swal.fire({
+        title: 'Coś poszło nie tak',
+        icon: 'error'
+      })
+    }
+  }
+
+  const dict = {
+    mat: 'Matematyka',
+    inf: 'Informatyka',
+    none: 'Wszystkie'
+  }
+
+  useEffect(() => {
+    getAd()
+  }, [])
+
+  useEffect(() => {
+    setTitle(ad.title)
+    setContent(ad.content)
+    setYear({name: ad.year === 0 ? 'Wszystkie' : String(ad.year), code: ad.year})
+    setSpecialization({name: dict[ad.specialization], code: ad.specialization})
+  }, [ad])
 
   const yearOptions = [
     {name: 'Wszystkie', code: 0},
-    {name: '1', code: '1'},
-    {name: '2', code: '2'},
-    {name: '3', code: '3'},
-    {name: '4', code: '4'},
-    {name: '5', code: '5'}
+    {name: '1', code: 1},
+    {name: '2', code: 2},
+    {name: '3', code: 3},
+    {name: '4', code: 4},
+    {name: '5', code: 5}
   ]
 
   const specializationOptions = [
@@ -55,8 +83,11 @@ const New = props => {
   ]
 
   return ( 
-    <div className='new'>
-      <h2>Add new Event</h2>
+    <div className='edit'>
+      <span style={{color: 'grey', fontSize: '14px'}}>Id: {ad.id}</span>
+      <h2>Edit</h2>
+      <img src={ad.background} className='image'/>
+      <br /><br />
       <InputText 
         className='new-input' 
         value={title}
@@ -89,9 +120,9 @@ const New = props => {
       <br />
       <input type='file' ref={backgroundRef} placeholder='aaa'/>
       <br /><br />
-      <Button label='Dodaj' onClick={postAd} />
+      <Button label='Update' onClick={updateAd} />
     </div>
    )
 }
  
-export default withRouter(New)
+export default Edit
