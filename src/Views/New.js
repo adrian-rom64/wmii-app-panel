@@ -25,6 +25,7 @@ const New = props => {
     if (backgroundRef.current.files[0])
       data.set('background', backgroundRef.current.files[0])
     const res = await Api.post('/ads', data)
+    if (!res) return
     if (res.code === 200) {
       Swal.fire({
         title: 'Ogłoszenie dodane',

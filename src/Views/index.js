@@ -13,6 +13,7 @@ const Index = props => {
 
   const getAds = async () => {
     const res = await Api.get('/ads')
+    if (!res) return
     if (res.code === 200)
       setAds(res.data.ads)
     else
@@ -21,6 +22,7 @@ const Index = props => {
 
   const deleteAd = async id => {
     const res = await Api.delete(`/ads/${id}`)
+    if (!res) return 'error'
     if (res.code === 200) return true
     return false
   }
@@ -49,7 +51,9 @@ const Index = props => {
       reverseButtons: true
     }).then( async result => {
       if (result.value) {
-        if (await deleteAd(id)) {
+        const res = await deleteAd(id)
+        if (res === 'error') return
+        else if (res) {
           setAds(ads => ads.filter(item => item.id !== id))
           Swal.fire({
             title: 'Usunięto',

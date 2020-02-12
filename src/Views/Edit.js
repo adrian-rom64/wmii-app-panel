@@ -25,6 +25,7 @@ const Edit = props => {
     if (backgroundRef.current.files[0])
       data.set('background', backgroundRef.current.files[0])
     const res = await Api.patch(`/ads/${ad.id}`, data)
+    if (!res) return
     if (res.code === 200) {
       props.history.push('/ads')
       Swal.fire({
@@ -42,7 +43,7 @@ const Edit = props => {
   const getAd = async () => {
     const id = props.history.location.pathname.replace('/ads/', '').replace('/edit', '')
     const res = await Api.get(`/ads/${id}`)
-    console.log(res)
+    if (!res) return
     if (res.code === 200) {
       setAd(res.data.ad)
     } else {

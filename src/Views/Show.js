@@ -11,7 +11,7 @@ const Show = props => {
   const getAd = async () => {
     const id = props.history.location.pathname.replace('/ads/', '')
     const res = await Api.get(`/ads/${id}`)
-    console.log(res)
+    if (!res) return
     if (res.code === 200) {
       setAd(res.data.ad)
     } else {

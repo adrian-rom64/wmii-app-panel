@@ -19,12 +19,11 @@ export default class Api {
     })
   }
 
-  static request = async (method, url, payload) => {
+  static makeRequest = async (method, url, payload) => {
     let response = null
     const setResponse = _response => {response = _response}
     try {
       await Api.axios()[method](url, payload).then(res => {
-        if (res.status === 401) Api.unauthorizedHandler()
         setResponse(res)
       }).catch(err => {
         setResponse({status: err.response.status, data: null})
@@ -32,9 +31,21 @@ export default class Api {
       return {code: response.status, data: response.data}
     }
     catch {
-      Api.noConnectionHandler()
       return {code: 0, data: null}
     }
+  }
+
+  static request = async (method, url, payload) => {
+    const res = await Api.makeRequest(method, url, payload)
+    if (res.code === 401) {
+      Api.unauthorizedHandler()
+      return false
+    }
+    if (res.code === 0) {
+      Api.noConnectionHandler()
+      return false
+    }
+    return res
   }
 
   static unauthorizedHandler = () => {
@@ -66,7 +77,7 @@ export default class Api {
       password: password
     }
     const res = await Api.post('/login', data)
-    console.log(res.code)
+    if (!res) return false
     if (res.code !== 200) return false
     else {
       localStorage.setItem('token', res.data.token)
