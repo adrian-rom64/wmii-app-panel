@@ -2,8 +2,8 @@ import Axios from 'axios'
 import Swal from 'sweetalert2'
 import setLoading from './Components/Spinner'
 
-// const apiUrl = 'https://wmii-app-backend.herokuapp.com/'
-const apiUrl = 'http://localhost:3000'
+const apiUrl = 'https://wmii-app-backend.herokuapp.com/'
+// const apiUrl = 'http://localhost:3000'
 
 export default class Api {
 
