@@ -10,16 +10,16 @@ const SideMenu = props => {
 
   const items = [
     {
-      label: 'Assets',
+      label: 'Ogłoszenia',
       items: [
-        {label: 'Index', command: () => goto('/ads'), disabled: path ===  '/ads'},
-        {label: 'New', command: () => goto('/ads/new'), disabled: path ===  '/ads/new'}
+        {label: 'Lista', command: () => goto('/ads'), disabled: path ===  '/ads'},
+        {label: 'Nowe', command: () => goto('/ads/new'), disabled: path ===  '/ads/new'}
       ]
     },
     {
-      label: 'Account',
+      label: 'Konto',
       items: [
-        {label: 'Log out', command: () => {
+        {label: 'Wyloguj', command: () => {
           props.logout()
           goto('/login')
         }}

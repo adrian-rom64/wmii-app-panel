@@ -1,5 +1,6 @@
 import Axios from 'axios'
 import Swal from 'sweetalert2'
+import setLoading from './Components/Spinner'
 
 // const apiUrl = 'https://wmii-app-backend.herokuapp.com/'
 const apiUrl = 'http://localhost:3000'
@@ -20,6 +21,7 @@ export default class Api {
   }
 
   static makeRequest = async (method, url, payload) => {
+    setLoading(true)
     let response = null
     const setResponse = _response => {response = _response}
     try {
@@ -28,9 +30,11 @@ export default class Api {
       }).catch(err => {
         setResponse({status: err.response.status, data: null})
       })
+      setLoading(false)
       return {code: response.status, data: response.data}
     }
     catch {
+      setLoading(false)
       return {code: 0, data: null}
     }
   }

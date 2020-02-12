@@ -11,10 +11,10 @@ const Navbar = props => {
 		props.history.push('/login')
 	}
 
-	const disabledLoginButton = <Button disabled label='Login' className='p-button-secondary'/>
+	const disabledLoginButton = <Button disabled label='Zaloguj' className='p-button-secondary'/>
 	const logoButton = <span onClick={() => props.history.push('/')}>Wmii app panel</span>
-	const logoutButton = <Button onClick={logoutHandler} label='Log out' className='p-button-secondary'/>
-	const loginButton = <Button onClick={() => props.history.push('/login')} label='Log in' />
+	const logoutButton = <Button onClick={logoutHandler} label='Wyloguj' className='p-button-secondary'/>
+	const loginButton = <Button onClick={() => props.history.push('/Zaloguj')} label='Log in' />
 
 	let authButton = loginButton
 	if (!props.loggedIn && props.history.location.pathname === '/login')
