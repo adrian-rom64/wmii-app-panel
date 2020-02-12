@@ -1,7 +1,8 @@
 import Axios from 'axios'
+import Swal from 'sweetalert2'
 
-const apiUrl = 'https://wmii-app-backend.herokuapp.com/'
-// const apiUrl = 'http://localhost:3000'
+// const apiUrl = 'https://wmii-app-backend.herokuapp.com/'
+const apiUrl = 'http://localhost:3000'
 
 export default class Api {
 
@@ -23,6 +24,7 @@ export default class Api {
     const setResponse = _response => {response = _response}
     try {
       await Api.axios()[method](url, payload).then(res => {
+        if (res.status === 401) Api.unauthorizedHandler()
         setResponse(res)
       }).catch(err => {
         setResponse({status: err.response.status, data: null})
@@ -30,9 +32,27 @@ export default class Api {
       return {code: response.status, data: response.data}
     }
     catch {
-      console.error('Error while connecting to server')
+      Api.noConnectionHandler()
       return {code: 0, data: null}
     }
+  }
+
+  static unauthorizedHandler = () => {
+    console.error('Not authorized')
+    Swal.fire({
+      title: 'Brak dostępu',
+      icon: 'error'
+    })
+    localStorage.removeItem('token')
+    window.location.reload()
+  }
+
+  static noConnectionHandler = () => {
+    console.error('Error while connecting to server')
+    Swal.fire({
+      title: 'Błąd połączenia z serwerem',
+      icon: 'error'
+    })
   }
 
   static get = async (url, payload) => this.request('get', url, payload)

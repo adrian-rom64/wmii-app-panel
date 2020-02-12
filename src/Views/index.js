@@ -39,25 +39,25 @@ const Index = props => {
 
   const deleteHandler = id => {
     Swal.fire({
-      title: 'Are you sure?',
+      title: 'Czy jesteś pewien?',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Continue',
-      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Usuń',
+      cancelButtonText: 'Anuluj',
       reverseButtons: true
     }).then( async result => {
       if (result.value) {
         if (await deleteAd(id)) {
           setAds(ads => ads.filter(item => item.id !== id))
           Swal.fire({
-            title: 'Deleted',
+            title: 'Usunięto',
             icon: 'success',
           })
         } else {
           Swal.fire({
-            title: 'Something went wrong',
+            title: 'Coś poszło nie tak',
             icon: 'error'
           })
         }
@@ -70,9 +70,12 @@ const Index = props => {
     let color = 'black'
     if (title === 'edit') color = '#0074D9'
     if (title === 'delete') color = '#FF4136'
+    let text = title
+    if (title === 'edit') text = 'edytuj'
+    if (title === 'delete') text = 'usuń'
     return (
       <div className='link' onClick={func} style={{ color: color }}>
-        {title}
+        {text}
       </div>
     )
   }
@@ -90,10 +93,10 @@ const Index = props => {
       <h2>Index</h2>
       <DataTable value={data} style={{ textAlign: 'center' }} responsive>
         <Column style={{ width: '60px' }} field='id' header='Id' />
-        <Column field='title' header='Title' />
-        <Column field='updated_at' header='Updated' />
-        <Column field='edit' header='Edit' />
-        <Column field='delete' header='Delete' />
+        <Column field='title' header='Tytuł' />
+        <Column field='updated_at' header='Aktualizowano' />
+        <Column field='edit' header='Edytuj' />
+        <Column field='delete' header='Usuń' />
       </DataTable>
     </div>
   )

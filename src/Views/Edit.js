@@ -6,7 +6,6 @@ import {Button} from 'primereact/button'
 import '../Styles/Edit.css'
 import Api from '../Api'
 import Swal from 'sweetalert2'
-import {withRouter} from 'react-router'
 
 const Edit = props => {
 
@@ -28,6 +27,10 @@ const Edit = props => {
     const res = await Api.patch(`/ads/${ad.id}`, data)
     if (res.code === 200) {
       props.history.push('/ads')
+      Swal.fire({
+        title: 'Ogłoszenie zaaktualizowane',
+        icon: 'success'
+      })
     } else {
       Swal.fire({
         title: 'Coś poszło nie tak',
@@ -85,14 +88,14 @@ const Edit = props => {
   return ( 
     <div className='edit'>
       <span style={{color: 'grey', fontSize: '14px'}}>Id: {ad.id}</span>
-      <h2>Edit</h2>
+      <h2>Edytuj</h2>
       <img src={ad.background} className='image'/>
       <br /><br />
       <InputText 
         className='new-input' 
         value={title}
         onChange={e => setTitle(e.target.value)}
-        placeholder='Title'
+        placeholder='Tytuł'
       />
       <br /><br />
       <InputTextarea
@@ -101,7 +104,7 @@ const Edit = props => {
         cols={30}
         value={content}
         onChange={e => setContent(e.target.value)}
-        placeholder='Content'
+        placeholder='Treść'
       />
       <br /><br />
       <SelectButton

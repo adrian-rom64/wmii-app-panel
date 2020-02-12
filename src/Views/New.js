@@ -56,12 +56,12 @@ const New = props => {
 
   return ( 
     <div className='new'>
-      <h2>Add new Event</h2>
+      <h2>Dodaj nowe ogłoszenie</h2>
       <InputText 
         className='new-input' 
         value={title}
         onChange={e => setTitle(e.target.value)}
-        placeholder='Title'
+        placeholder='Tytuł'
       />
       <br /><br />
       <InputTextarea
@@ -70,7 +70,7 @@ const New = props => {
         cols={30}
         value={content}
         onChange={e => setContent(e.target.value)}
-        placeholder='Content'
+        placeholder='Treść'
       />
       <br /><br />
       <SelectButton
