@@ -86,11 +86,14 @@ const Edit = props => {
     {name: 'Matematyka', code: 'mat'}
   ]
 
+  const image = null
+  if (ad.background) image = <img src={ad.background} className='image' />
+
   return ( 
     <div className='edit'>
       <span style={{color: 'grey', fontSize: '14px'}}>Id: {ad.id}</span>
       <h2>Edytuj</h2>
-      <img src={ad.background} className='image'/>
+      {image}
       <br /><br />
       <InputText 
         className='new-input' 

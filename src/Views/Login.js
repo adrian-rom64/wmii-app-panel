@@ -18,6 +18,7 @@ const Login = props => {
   const loginHandler = async () => {
     const result = await Api.login(username, password)
     props.setLoggedIn(result)
+    props.history.push('/ads')
   }
 
   const keyHandler = event => {

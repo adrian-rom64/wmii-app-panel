@@ -62,11 +62,14 @@ const Show = props => {
     getAd()
   }, [])
 
+  const image = null
+  if (ad.background) image = <img src={ad.background} className='image' />
+
   return ( 
     <div className='show'>
       <span style={{color: 'grey', fontSize: '14px'}}>Id: {ad.id}</span>
       <br />
-      <img src={ad.background} className='image' />
+      {image}
       <h2>{ad.title}</h2>
       <p>{ad.content}</p>
       <div className='buttons'>
